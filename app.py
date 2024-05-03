@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import joblib
+import pickle
 import re
 import contractions
 
@@ -102,7 +102,7 @@ with col2:
         ]
         # Collect predictions
         for model_file in classifier_model_files:
-            model = joblib.load(model_file)
+            model = pickle.load(model_file)
             y_pred = model.predict(X)[0]  # Assume y_pred is an array with a single element
             model_name = model_file.replace('_classifier.pkl', '').replace('_', ' ').title()
             classifier_results[model_name] = y_pred
@@ -131,7 +131,7 @@ with col2:
         ]
         ratings = []
         for model_file in regression_model_files:
-            model = joblib.load(model_file)
+            model = pickle.load(model_file)
             y_pred = model.predict(X)[0]  # Assume y_pred is an array with a single element
             if y_pred <= 10 and y_pred >= 1:  # Only consider ratings that are 10 or below
                 ratings.append(y_pred)
@@ -145,7 +145,7 @@ with col2:
         
         # Displaying individual regressor predictions
         for model_file in regression_model_files:
-            model = joblib.load(model_file)
+            model = pickle.load(model_file)
             y_pred = model.predict(X)[0]
             model_name = model_file.replace('_regressor.pkl', '').replace('_', ' ').title()
             st.markdown(f"**{model_name} predicts the rating to be**: <span style='color: #d2042d;'>{y_pred:.1f}</span>", unsafe_allow_html=True)
